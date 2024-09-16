@@ -14,6 +14,8 @@ import utils.ConnectionUtil;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +44,9 @@ public class TicheteJira_Controller {
     private TextArea taComments;
 
     @FXML
+    private TextField txtDEV;
+
+    @FXML
     private TextField txtID;
 
     @FXML
@@ -49,6 +54,12 @@ public class TicheteJira_Controller {
 
     @FXML
     private TextField txtNumeOF;
+
+    @FXML
+    private TextField txtSursa;
+
+    @FXML
+    private TextField txtTA;
 
 
     // - Conectarea la baza de DATE:
@@ -59,19 +70,19 @@ public class TicheteJira_Controller {
     // - Butonul propriu-zis:
     @FXML
     private void btnSalvare(ActionEvent e) {
-
         // -> Declararea variabilelor:
         int id = Integer.valueOf(txtID.getText());
         String numeOF = txtNumeOF.getText();
         String numarHD = txtNumarHD.getText();
         String comments = taComments.getText();
+        String sursa = txtSursa.getText();
+        String ta = txtTA.getText();
+        String dev = txtDEV.getText();
         LocalDate selectedDate = dpData.getValue(); // Obținem data din DatePicker
         boolean verificat = cbVerificat.isSelected(); // Obținem valoarea CheckBox-ului
 
-
-
         // -> Inserarea datelor in baza de date + AlertType:
-        if (numarHD.isEmpty() || comments.isEmpty()  || numeOF.isEmpty() || selectedDate == null) {
+        if (numarHD.isEmpty() || comments.isEmpty() || numeOF.isEmpty() || ta.isEmpty() || dev.isEmpty() || sursa.isEmpty() || selectedDate == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initStyle(StageStyle.UTILITY);
             alert.setTitle("Status teste");
@@ -79,35 +90,77 @@ public class TicheteJira_Controller {
             alert.setContentText("Vă rugăm să completați toate datele!");
             alert.showAndWait();
         } else {
-            // query
-            String sql = "INSERT INTO tichetejira (id, numeOF, numarHD, comments, data, verificat) VALUES (?, ?, ?, ?, ?, ?)";
-            try {
-                PreparedStatement preparedStatement = con.prepareStatement(sql);
-                preparedStatement.setInt(1, id);
-                preparedStatement.setString(2, numeOF);
-                preparedStatement.setString(3, numarHD);
-                preparedStatement.setString(4, comments);
-                preparedStatement.setDate(5, java.sql.Date.valueOf(selectedDate)); // Convertim LocalDate la java.sql.Date
-                preparedStatement.setBoolean(6, verificat); // Adăugăm valoarea CheckBox-ului
+            // Verificăm dacă id există deja în baza de date
+            String checkIdSql = "SELECT COUNT(*) FROM tichetejira WHERE id = ?";
+            try (PreparedStatement checkIdStmt = con.prepareStatement(checkIdSql)) {
+                checkIdStmt.setInt(1, id);
+                ResultSet rs = checkIdStmt.executeQuery();
+                rs.next();
+                int count = rs.getInt(1);
 
-                int rowsAffected = preparedStatement.executeUpdate();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.initStyle(StageStyle.UTILITY);
-                alert.setTitle("Status teste");
-                alert.setHeaderText(null);
-                if (rowsAffected > 0) {
-                    alert.setContentText("Datele au fost introduse!");
+                if (count > 0) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.initStyle(StageStyle.UTILITY);
+                    alert.setTitle("Status teste");
+                    alert.setHeaderText(null);
+                    alert.setContentText("ID-ul este deja înregistrat!");
+                    alert.showAndWait();
                 } else {
-                    alert.setContentText("Nicio modificare nu a fost efectuată!");
-                }
-                alert.showAndWait();
+                    // Verificăm dacă numeOF există deja în baza de date
+                    String checkNumeOFSql = "SELECT COUNT(*) FROM tichetejira WHERE numeOF = ?";
+                    try (PreparedStatement checkNumeOFStmt = con.prepareStatement(checkNumeOFSql)) {
+                        checkNumeOFStmt.setString(1, numeOF);
+                        ResultSet rsNumeOF = checkNumeOFStmt.executeQuery();
+                        rsNumeOF.next();
+                        int countNumeOF = rsNumeOF.getInt(1);
 
-            } catch (Exception ex) {
-                System.err.println("Eroare! Datele au fost introduse deja! Vă rugăm utilizați un alt ID și alte date!");
+                        if (countNumeOF > 0) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.initStyle(StageStyle.UTILITY);
+                            alert.setTitle("Status teste");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Numele OF este deja înregistrat!");
+                            alert.showAndWait();
+                        } else {
+                            // Inserăm datele în baza de date
+                            String sql = "INSERT INTO tichetejira (id, numeOF, numarHD, comments, sursa, ta, dev, data, verificat) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                            try (PreparedStatement preparedStatement = con.prepareStatement(sql)) {
+                                preparedStatement.setInt(1, id);
+                                preparedStatement.setString(2, numeOF);
+                                preparedStatement.setString(3, numarHD);
+                                preparedStatement.setString(4, comments);
+                                preparedStatement.setString(5, sursa);
+                                preparedStatement.setString(6, ta);
+                                preparedStatement.setString(7, dev);
+                                preparedStatement.setDate(8, java.sql.Date.valueOf(selectedDate)); // Convertim LocalDate la java.sql.Date
+                                preparedStatement.setBoolean(9, verificat); // Adăugăm valoarea CheckBox-ului
+
+                                int rowsAffected = preparedStatement.executeUpdate();
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.initStyle(StageStyle.UTILITY);
+                                alert.setTitle("Status teste");
+                                alert.setHeaderText(null);
+                                if (rowsAffected > 0) {
+                                    alert.setContentText("Datele au fost introduse!");
+                                } else {
+                                    alert.setContentText("Nicio modificare nu a fost efectuată!");
+                                }
+                                alert.showAndWait();
+                            }
+                        }
+                    } catch (SQLException ex) {
+                        System.err.println("Eroare! Verificarea sau inserarea a eșuat!");
+                        ex.printStackTrace();
+                    }
+                }
+            } catch (SQLException ex) {
+                System.err.println("Eroare! Verificarea ID-ului a eșuat!");
                 ex.printStackTrace();
             }
         }
     }
+
+
 
 
 
@@ -120,6 +173,9 @@ public class TicheteJira_Controller {
             txtID.setText(null);
             taComments.setText(null);
             txtNumarHD.setText(null);
+            txtDEV.setText(null);
+            txtTA.setText(null);
+            txtSursa.setText(null);
         });
 
     }
