@@ -11,66 +11,69 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="687.0" prefWidth="690.0" style="-fx-background-color: #043568;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.TicheteJira_Controller">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="708.0" style="-fx-background-color: #043568;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.TicheteJira_Controller">
    <children>
-      <Label layoutX="180.0" layoutY="34.0" prefHeight="27.0" prefWidth="134.0" text="Tichete JIRA" textFill="#dfe1ea">
+      <Label layoutX="301.0" layoutY="14.0" prefHeight="27.0" prefWidth="134.0" text="Tichete JIRA" textFill="#dfe1ea">
          <font>
             <Font name="Comic Sans MS Bold" size="19.0" />
          </font>
       </Label>
-      <ImageView fitHeight="50.0" fitWidth="162.0" layoutX="153.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="37.0" fitWidth="134.0" layoutX="302.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@alphabank.png" />
          </image>
       </ImageView>
-      <TextField fx:id="txtNumeOF" layoutX="48.0" layoutY="234.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="345.0" promptText="Nume OF" style="-fx-background-color: #483D8B;" styleClass="sidebar" stylesheets="@stylesheet.css">
+      <TextField fx:id="txtNumeOF" layoutX="48.0" layoutY="234.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="164.0" promptText="Nume OF" style="-fx-background-color: #483D8B;" styleClass="sidebar" stylesheets="@stylesheet.css">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <TextArea fx:id="taComments" layoutX="153.0" layoutY="413.0" prefHeight="159.0" prefWidth="518.0" style="-fx-background-color: #483D8B;" styleClass="textarea" stylesheets="@stylesheet.css" />
-      <Button fx:id="btnSalvare" layoutX="424.0" layoutY="593.0" mnemonicParsing="false" onAction="#btnSalvare" prefHeight="63.0" prefWidth="134.0" styleClass="btnRegister" stylesheets="@stylesheet.css" text="Salvare" />
-      <TextField fx:id="txtID" layoutX="48.0" layoutY="174.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="345.0" promptText="ID" style="-fx-background-color: #483D8B;" styleClass="sidebar" stylesheets="@stylesheet.css">
+      <TextArea fx:id="taComments" layoutX="160.0" layoutY="417.0" prefHeight="159.0" prefWidth="525.0" style="-fx-background-color: #483D8B;" styleClass="textarea" stylesheets="@stylesheet.css" />
+      <Button fx:id="btnSalvare" layoutX="472.0" layoutY="600.0" mnemonicParsing="false" onAction="#btnSalvare" prefHeight="63.0" prefWidth="134.0" styleClass="btnRegister" stylesheets="@stylesheet.css" text="Salvare" />
+      <TextField fx:id="txtID" layoutX="48.0" layoutY="174.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="164.0" promptText="ID" style="-fx-background-color: #483D8B;" styleClass="sidebar" stylesheets="@stylesheet.css">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <Button fx:id="btnCancel" layoutX="55.0" layoutY="593.0" mnemonicParsing="false" onAction="#btnCancel" prefHeight="63.0" prefWidth="152.0" style="-fx-background-color: #483D8B;" styleClass="btnCancel" stylesheets="@stylesheet.css" text="Cancel" textAlignment="CENTER" textFill="#dedbeb">
+      <Button fx:id="btnCancel" layoutX="103.0" layoutY="600.0" mnemonicParsing="false" onAction="#btnCancel" prefHeight="63.0" prefWidth="152.0" style="-fx-background-color: #483D8B;" styleClass="btnCancel" stylesheets="@stylesheet.css" text="Cancel" textAlignment="CENTER" textFill="#dedbeb">
          <font>
             <Font name="Comic Sans MS Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnBack" layoutX="224.0" layoutY="593.0" mnemonicParsing="false" onAction="#btnBack" prefHeight="63.0" prefWidth="184.0" style="-fx-background-color: blue;" styleClass="btnBack" stylesheets="@stylesheet.css" text="Back to Dashboard" textAlignment="CENTER" textFill="#dedbeb">
+      <Button fx:id="btnBack" layoutX="272.0" layoutY="600.0" mnemonicParsing="false" onAction="#btnBack" prefHeight="63.0" prefWidth="184.0" style="-fx-background-color: blue;" styleClass="btnBack" stylesheets="@stylesheet.css" text="Back to Dashboard" textAlignment="CENTER" textFill="#dedbeb">
          <font>
             <Font name="Comic Sans MS Bold" size="14.0" />
          </font>
       </Button>
-      <DatePicker fx:id="dpData" layoutX="433.0" layoutY="177.0" prefHeight="37.0" prefWidth="192.0" promptText="Data inregistrare" />
-      <TextField fx:id="txtNumarHD" layoutX="48.0" layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="345.0" promptText="Numar HD" style="-fx-background-color: #483D8B;" styleClass="sidebar" stylesheets="@stylesheet.css">
+      <DatePicker fx:id="dpData" layoutX="241.0" layoutY="177.0" prefHeight="37.0" prefWidth="192.0" promptText="Data actualizare " />
+      <TextField fx:id="txtNumarHD" layoutX="48.0" layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="164.0" promptText="Numar HD" style="-fx-background-color: #483D8B;" styleClass="sidebar" stylesheets="@stylesheet.css">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <CheckBox fx:id="cbVerificat" layoutX="433.0" layoutY="242.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="134.0" text="Are atasament" textFill="#f2f1f1" />
-      <TextField fx:id="txtSursa" layoutX="51.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="345.0" promptText="Sursa" style="-fx-background-color: #483D8B;" styleClass="sidebar" stylesheets="@stylesheet.css">
+      <CheckBox fx:id="cbVerificat" layoutX="453.0" layoutY="182.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="134.0" text="Are atasament" textFill="#f2f1f1" />
+      <TextField fx:id="txtSursa" layoutX="48.0" layoutY="362.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="164.0" promptText="Sursa" style="-fx-background-color: #483D8B;" styleClass="sidebar" stylesheets="@stylesheet.css">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <TextField fx:id="txtTA" layoutX="436.0" layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="237.0" promptText="Nume TA" style="-fx-background-color: #483D8B;" styleClass="sidebar" stylesheets="@stylesheet.css">
+      <TextField fx:id="txtTA" layoutX="241.0" layoutY="234.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="315.0" promptText="Nume TA" style="-fx-background-color: #483D8B;" styleClass="sidebar" stylesheets="@stylesheet.css">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <TextField fx:id="txtDEV" layoutX="436.0" layoutY="359.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="237.0" promptText="Nume DEV" style="-fx-background-color: #483D8B;" styleClass="sidebar" stylesheets="@stylesheet.css">
+      <TextField fx:id="txtDEV" layoutX="241.0" layoutY="300.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="315.0" promptText="Nume DEV" style="-fx-background-color: #483D8B;" styleClass="sidebar" stylesheets="@stylesheet.css">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <Label layoutX="51.0" layoutY="427.0" text="Comments" textFill="#f7f7f7">
+      <Label layoutX="58.0" layoutY="431.0" text="Comments" textFill="#f7f7f7">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
       </Label>
+      <DatePicker fx:id="dpDataTA" layoutX="241.0" layoutY="362.0" prefHeight="37.0" prefWidth="143.0" promptText="End date TA" />
+      <DatePicker fx:id="dpDataDEV" layoutX="391.0" layoutY="362.0" prefHeight="37.0" prefWidth="143.0" promptText="End date DEV" />
+      <DatePicker fx:id="dpDataUAT" layoutX="541.0" layoutY="362.0" prefHeight="37.0" prefWidth="143.0" promptText="End date UAT" />
    </children>
 </AnchorPane>

@@ -19,6 +19,8 @@ import java.sql.PreparedStatement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class SignUP_Controller implements Initializable {
 
@@ -89,59 +91,75 @@ public class SignUP_Controller implements Initializable {
     { con = ConnectionUtil.conDB(); }
 
     // - Butonul propriu-zis:
-    @FXML
-    private void btnRegister(ActionEvent e ) {
 
-        // -> Declararea variabilelor:
 
-        int id = Integer.valueOf(txtID.getText());
-        String fname = txtFirstName.getText();
-        String lname = txtLastName.getText();
-        String uname = txtUsernameRegister.getText();
-        String pass = String.valueOf(txtPasswordRegister.getText());
-        String re_pass = String.valueOf(txtRetypePass.getText());
-        String addr = taAddress.getText();
-        String status ;
-
-        // -> Inserarea datelor in baza de date + AlertType:
-        
-        if (fname.isEmpty() || lname.isEmpty() || uname.isEmpty() || pass.isEmpty() ||
-                re_pass.isEmpty() || addr.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.initStyle(StageStyle.UTILITY);
-            alert.setTitle("Register Information");
-            alert.setHeaderText(null);
-            alert.setContentText("Va rugam completati toate datele!");
-            alert.showAndWait();
-        } else {
-            //query
-            String sql = "INSERT INTO register (id,fname,lname,uname,pass,re_pass" +
-                    ", addr) VALUES (?,?, ?, ?, ?, ?, ?)";
+        // Funcție pentru a cripta parola cu SHA1:
+        public static String SHA1(String password) {
             try {
-                PreparedStatement preparedStatement = null;
-                preparedStatement = con.prepareStatement(sql);
-                preparedStatement.setInt(1, id);
-                preparedStatement.setString(2, fname);
-                preparedStatement.setString(3, lname);
-                preparedStatement.setString(4, uname);
-                preparedStatement.setString(5, pass);
-                preparedStatement.setString(6, re_pass);
-                preparedStatement.setString(7, addr);
+                MessageDigest md = MessageDigest.getInstance("SHA1");
+                byte[] result = md.digest(password.getBytes());
+                StringBuilder sb = new StringBuilder();
+                for (byte b : result) {
+                    sb.append(String.format("%02x", b));
+                }
+                return sb.toString();
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
+        @FXML
+        private void btnRegister(ActionEvent e) {
 
-                int resultSet = preparedStatement.executeUpdate();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            // -> Declararea variabilelor:
+            int id = Integer.valueOf(txtID.getText());
+            String fname = txtFirstName.getText();
+            String lname = txtLastName.getText();
+            String uname = txtUsernameRegister.getText();
+
+            // Parola și confirmarea parolei sunt criptate folosind SHA1
+            String pass = SHA1(txtPasswordRegister.getText());  // Criptare SHA1 a parolei introduse
+            String re_pass = SHA1(txtRetypePass.getText());     // Criptare SHA1 a confirmării parolei
+            String addr = taAddress.getText();
+
+            // -> Inserarea datelor în baza de date:
+            if (fname.isEmpty() || lname.isEmpty() || uname.isEmpty() || pass.isEmpty() ||
+                    re_pass.isEmpty() || addr.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.initStyle(StageStyle.UTILITY);
                 alert.setTitle("Register Information");
                 alert.setHeaderText(null);
-                alert.setContentText("Cont creat cu success! Va rugam reveniti in formularul de Login!");
+                alert.setContentText("Va rugam completati toate datele!");
                 alert.showAndWait();
-            } catch (Exception ex) {
-                System.err.println("Eroare! Contul a fost creat deja! Va rugam utilizati un alt ID si un alt username!");
+            } else {
+                // Query pentru a insera datele în baza de date
+                String sql = "INSERT INTO register (id, fname, lname, uname, pass, re_pass, addr) VALUES (?,?,?,?,?,?,?)";
+                try {
+                    PreparedStatement preparedStatement = con.prepareStatement(sql);
+                    preparedStatement.setInt(1, id);
+                    preparedStatement.setString(2, fname);
+                    preparedStatement.setString(3, lname);
+                    preparedStatement.setString(4, uname);
+                    preparedStatement.setString(5, pass);  // Parola criptată
+                    preparedStatement.setString(6, re_pass);  // Confirmarea parolei criptate
+                    preparedStatement.setString(7, addr);
 
+                    int resultSet = preparedStatement.executeUpdate();
+                    // Afișare mesaj succes
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.initStyle(StageStyle.UTILITY);
+                    alert.setTitle("Register Information");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Cont creat cu succes! Va rugam reveniti in formularul de Login!");
+                    alert.showAndWait();
+                } catch (Exception ex) {
+                    // Tratează eroarea dacă deja există un utilizator cu același id sau username
+                    System.err.println("Eroare! Contul a fost creat deja! Va rugam utilizati un alt ID si un alt username!");
+                }
             }
         }
-    }
+
+
 
 
     // 3. Butonul de CANCEL din program:

@@ -38,6 +38,15 @@ public class TicheteJira_Controller {
     private DatePicker dpData;
 
     @FXML
+    private DatePicker dpDataTA;
+
+    @FXML
+    private DatePicker dpDataDEV;
+
+    @FXML
+    private DatePicker dpDataUAT;
+
+    @FXML
     private AnchorPane rootPane;
 
     @FXML
@@ -79,10 +88,13 @@ public class TicheteJira_Controller {
         String ta = txtTA.getText();
         String dev = txtDEV.getText();
         LocalDate selectedDate = dpData.getValue(); // Obținem data din DatePicker
+        LocalDate selectedDate2 = dpDataTA.getValue(); // Obținem data din DatePicker
+        LocalDate selectedDate3 = dpDataDEV.getValue(); // Obținem data din DatePicker
+        LocalDate selectedDate4 = dpDataUAT.getValue(); // Obținem data din DatePicker
         boolean verificat = cbVerificat.isSelected(); // Obținem valoarea CheckBox-ului
 
         // -> Inserarea datelor in baza de date + AlertType:
-        if (numarHD.isEmpty() || comments.isEmpty() || numeOF.isEmpty() || ta.isEmpty() || dev.isEmpty() || sursa.isEmpty() || selectedDate == null) {
+        if (numarHD.isEmpty() || comments.isEmpty() || numeOF.isEmpty() || ta.isEmpty() || dev.isEmpty() || sursa.isEmpty() || selectedDate == null || selectedDate2 == null || selectedDate3 == null || selectedDate4 == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initStyle(StageStyle.UTILITY);
             alert.setTitle("Status teste");
@@ -123,7 +135,7 @@ public class TicheteJira_Controller {
                             alert.showAndWait();
                         } else {
                             // Inserăm datele în baza de date
-                            String sql = "INSERT INTO tichetejira (id, numeOF, numarHD, comments, sursa, ta, dev, data, verificat) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                            String sql = "INSERT INTO tichetejira (id, numeOF, numarHD, comments, sursa, ta, dev, data, verificat) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
                             try (PreparedStatement preparedStatement = con.prepareStatement(sql)) {
                                 preparedStatement.setInt(1, id);
                                 preparedStatement.setString(2, numeOF);
@@ -133,7 +145,10 @@ public class TicheteJira_Controller {
                                 preparedStatement.setString(6, ta);
                                 preparedStatement.setString(7, dev);
                                 preparedStatement.setDate(8, java.sql.Date.valueOf(selectedDate)); // Convertim LocalDate la java.sql.Date
-                                preparedStatement.setBoolean(9, verificat); // Adăugăm valoarea CheckBox-ului
+                                preparedStatement.setDate(9, java.sql.Date.valueOf(selectedDate2)); // Convertim LocalDate la java.sql.Date
+                                preparedStatement.setDate(10, java.sql.Date.valueOf(selectedDate3)); // Convertim LocalDate la java.sql.Date
+                                preparedStatement.setDate(11, java.sql.Date.valueOf(selectedDate4)); // Convertim LocalDate la java.sql.Date
+                                preparedStatement.setBoolean(12, verificat); // Adăugăm valoarea CheckBox-ului
 
                                 int rowsAffected = preparedStatement.executeUpdate();
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
